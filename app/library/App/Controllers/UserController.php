@@ -13,8 +13,9 @@ class UserController extends CrudResourceController
 
     public function authenticate()
     {
-        $username = $this->request->getUsername();
-        $password = $this->request->getPassword();
+        $request = $this->request->getJsonRawBody();
+        $username = $request->username;
+        $password = $request->password;
 
         $session = $this->authManager->loginWithUsernamePassword(\App\Auth\UsernameAccountType::NAME, $username,
             $password);
@@ -31,6 +32,16 @@ class UserController extends CrudResourceController
         ];
 
         return $this->createArrayResponse($response, 'data');
+    }
+
+    public function register()
+    {
+        $request = $this->request->getJsonRawBody();
+        $username = $request->username;
+        $password = $request->password;
+        $passwordRepeat = $request->password_repeat;
+        $name = $this->request->getPost('name', ['string', 'striptags']);
+
     }
 
     public function whitelist()
